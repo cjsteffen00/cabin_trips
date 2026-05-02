@@ -276,12 +276,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Loop through the photos folder
         for (let i = 1; i <= totalPhotos; i++) {
-            mediaPaths.push(`imgs/photos/${i}_.jpg`);
+            mediaPaths.push(`imgs/photos/_${i}_.jpg`);
         }
         
         // Loop through the videos folder
         for (let i = 1; i <= totalVideos; i++) {
-            mediaPaths.push(`imgs/videos/${i}_.mov`);
+            mediaPaths.push(`imgs/videos/_${i}_.mov`);
         }
 
         const numCols = 4;
