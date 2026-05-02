@@ -6,32 +6,85 @@
 }
 
 body, html {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #F5F5DC;
-    color: #241F20;
-    overflow: hidden; /* Prevents default vertical scrolling */
+    font-family: 'Lora', serif; /* Professional, readable body font */
+    background-color: #E4E5E0; /* Light Concrete */
+    color: #0C2112; /* Dark Forest Green for text */
+    overflow-x: hidden; 
 }
 
-/* Horizontal Scroll Container */
-.scroll-container {
+/* Typography Overrides for Headers */
+h1, h2, h3, .nav-brand {
+    font-family: 'Playfair Display', serif; /* Elegant, fancy header font */
+}
+
+/* --- NAVIGATION STYLES --- */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #183B22; 
+    padding: 0.8rem 3rem; 
     display: flex;
-    width: 600vw; /* 100vw for each of the 6 sections */
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    
+    /* THE UPGRADE: A custom bezier curve for a much more premium feel */
+    transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+    /* Tells the browser's graphics card to prepare for this exact animation */
+    will-change: transform; 
+}
+
+.top-nav.nav-hidden {
+    transform: translateY(-100%);
+}
+
+.nav-brand {
+    /* Reduced from 2rem to fit the thinner bar */
+    font-size: 1.6rem; 
+    color: #E4E5E0;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.nav-links a {
+    color: #E4E5E0;
+    text-decoration: none;
+    font-family: 'Lora', serif;
+    font-weight: 500;
+    /* Reduced from 1.1rem for a sleeker look */
+    font-size: 0.9rem; 
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: #A3C9A6; /* Light green accent on hover/active */
+}
+
+/* --- GSAP LAYOUT CONTAINERS --- */
+.pin-master {
+    width: 100%;
     height: 100vh;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden; 
 }
 
-/* Hide the visible scrollbar for a cleaner look */
-.scroll-container::-webkit-scrollbar {
-    display: none;
-}
-.scroll-container {
-    -ms-overflow-style: none;
-    scrollbar-width: none; 
+.horizontal-track {
+    display: flex;
+    width: 600vw; 
+    height: 100vh;
 }
 
-/* Individual Pages */
-section {
+.panel {
     width: 100vw;
     height: 100vh;
     flex-shrink: 0;
@@ -40,84 +93,399 @@ section {
     justify-content: center;
     align-items: center;
     padding: 2rem;
-    border-right: 2px dashed #C00031; /* Subtle divider between sections */
+    padding-top: 100px; 
+    border-right: 1px solid rgba(24, 59, 34, 0.2); 
 }
 
-section:last-child {
-    border-right: none;
-}
-
-/* Typography */
+/* More Typography Setup */
 h1 {
-    font-size: 5rem;
-    color: #C00031;
+    font-size: 5.5rem;
+    color: #183B22;
     letter-spacing: 2px;
     margin-bottom: 1rem;
 }
 
 h2 {
-    font-size: 3rem;
-    color: #C00031;
+    font-size: 3.5rem;
+    color: #183B22;
     margin-bottom: 2rem;
 }
 
-/* UI Elements (Cards & Forms) */
+h3 {
+    color: #183B22;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* UI Elements */
 .card {
-    background-color: rgba(36, 31, 32, 0.05);
-    padding: 2rem;
-    border-radius: 8px;
+    background-color: #F2F3F0; 
+    padding: 3rem;
+    border-radius: 4px; /* Sharper corners for a professional look */
     width: 100%;
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    max-width: 650px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    border-top: 5px solid #183B22;
 }
 
-label {
-    font-weight: bold;
-}
-
-input {
-    padding: 0.8rem;
-    border: 1px solid #241F20;
-    border-radius: 4px;
-    background-color: #F5F5DC;
-    color: #241F20;
-    font-size: 1rem;
-}
-
-button {
-    padding: 1rem;
-    background-color: #C00031;
-    color: #F5F5DC;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-button:hover {
-    background-color: #8c0024;
-}
-
-.info-box p {
+.presentation-card p {
+    font-size: 1.25rem;
+    line-height: 1.8;
     margin-bottom: 0.8rem;
-    font-size: 1.2rem;
+}
+
+.presentation-card hr {
+    border: 0;
+    height: 1px;
+    background: rgba(24, 59, 34, 0.2);
+    margin: 2rem 0;
 }
 
 /* Gallery Placeholders */
 .placeholder-grid {
     display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    justify-content: center;
 }
 
 .photo-placeholder {
-    width: 100px;
-    height: 100px;
-    background-color: #241F20;
-    opacity: 0.1;
+    width: 140px;
+    height: 140px;
+    background-color: #2C5E3B;
+    opacity: 0.15;
     border-radius: 4px;
+}
+
+/* --- GOOGLE SHEETS EMBED --- */
+.sheet-container {
+    width: 90vw; /* Takes up 90% of the viewport width */
+    max-width: 1400px; /* Caps the width on super wide monitors */
+    height: 70vh; /* Takes up 70% of the viewport height */
+    background-color: #F2F3F0;
+    border-radius: 4px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    border-top: 5px solid #183B22;
+    overflow: hidden;
+}
+
+.sheet-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* --- GOOGLE SHEETS CROP HACK --- */
+.iframe-cropper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* This hides anything that gets pushed outside the box */
+}
+
+.iframe-cropper iframe {
+    width: 100%;
+    /* Add extra height to compensate for the part we are chopping off */
+    height: calc(100% + 65px); 
+    /* Pull the iframe UP by 65px to hide the title and File/Edit menus */
+    margin-top: -65px; 
+    border: none;
+}
+
+/* --- EDITABLE CALENDAR GRID --- */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 equal columns for 5 days */
+    gap: 1.5rem;
+    width: 90vw;
+    max-width: 1400px;
+}
+
+.cal-day {
+    background-color: #F2F3F0;
+    border-radius: 4px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    border-top: 5px solid #183B22;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px; /* Gives plenty of room to type */
+    transition: transform 0.2s ease;
+}
+
+.cal-day:hover {
+    transform: translateY(-5px); /* Tiny lift effect on hover */
+}
+
+.cal-header {
+    background-color: #d1dfd3; /* Soft green */
+    color: #1A3A24;
+    padding: 1.2rem;
+    text-align: center;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    border-bottom: 1px solid rgba(24, 59, 34, 0.2);
+}
+
+.cal-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    outline: none; /* Removes the ugly blue glow when clicking inside */
+    font-size: 1.1rem;
+    line-height: 1.6;
+    cursor: text;
+}
+
+/* Custom placeholder text for empty editable divs */
+.cal-content:empty:before {
+    content: attr(data-placeholder);
+    color: #a0a0a0;
+    font-style: italic;
+}
+
+/* --- TITLE PAGE BACKGROUND --- */
+#home {
+    background-image: url('imgs/background.jpg');
+    background-size: cover;
+    /* move the image down a bit to hide the boring trees and show more of the beautiful sky */
+    background-position: center -700px;
+    background-repeat: no-repeat;
+}
+
+/* Ensure the text stands out over the image */
+#home h1, #home p {
+    color: #F2F3F0; 
+    text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* --- POLAROID SCATTER GALLERY --- */
+.photo-scatter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    justify-content: center;
+    padding-bottom: 2rem;
+}
+
+.polaroid {
+    background: #ffffff;
+    padding: 10px 10px 30px 10px; /* Thicker padding on bottom for the polaroid look */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, z-index 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    /* Default rotation for all photos */
+    transform: rotate(-3deg); 
+}
+
+.polaroid img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover; /* Keeps images square without stretching them */
+    border: 1px solid #eaeaea;
+}
+
+/* Rotate every other photo the opposite direction to make it look messy */
+.polaroid:nth-child(even) {
+    transform: rotate(4deg) translateY(10px);
+}
+
+.polaroid:nth-child(3n) {
+    transform: rotate(-5deg) translateY(-5px);
+}
+
+/* The Hover Effect: Straighten out and bring to front */
+.polaroid:hover {
+    transform: scale(1.15) rotate(0deg) !important;
+    z-index: 10;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+}
+
+#home h1, #home p {
+    color: #F2F3F0; 
+    /* Made the shadow darker and wider to compensate for no background tint */
+    text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.9);
+}
+
+
+/* --- FULL SCREEN DYNAMIC COLLAGE --- */
+#gallery {
+    padding: 0; /* Removes panel padding for a full-bleed effect */
+    position: relative;
+    border-right: none; 
+}
+
+.gallery-title {
+    position: absolute;
+    top: 5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    color: #F2F3F0;
+    font-size: 4rem;
+    text-shadow: 0 5px 25px rgba(0,0,0,0.8); /* Heavy shadow to pop off random images */
+    margin: 0;
+    pointer-events: none; /* Allows you to click "through" the text */
+}
+
+.collage-grid {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    /* Creates a 4 columns by 3 rows grid. Change these numbers to fit your preference! */
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0;
+    overflow: hidden;
+    background-color: #0C2112; 
+}
+
+.collage-cell {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.collage-cell img,
+.collage-cell video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures images fill the box without squishing */
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* --- DYNAMIC CARPOOL GRID --- */
+.carpool-controls {
+    margin-bottom: 2rem;
+    background: #F2F3F0;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    border-top: 3px solid #183B22;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.carpool-controls label {
+    font-weight: bold;
+    color: #183B22;
+    font-size: 1.1rem;
+}
+
+.carpool-controls select {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 1px solid rgba(24, 59, 34, 0.3);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    color: #0C2112;
+    font-family: 'Lora', serif;
+}
+
+.carpool-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    width: 90vw;
+    max-width: 1400px;
+    justify-content: center;
+}
+
+.car-card {
+    background-color: #F2F3F0;
+    border-radius: 4px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    border-top: 5px solid #183B22;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+}
+
+.car-card:hover {
+    transform: translateY(-5px);
+}
+
+.car-header {
+    background-color: #d1dfd3;
+    padding: 1rem;
+    text-align: center;
+    font-weight: bold;
+    color: #0C2112;
+    border-bottom: 1px solid rgba(24, 59, 34, 0.1);
+    font-size: 1.1rem;
+}
+
+.car-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.field-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #183B22;
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.editable-field {
+    outline: none;
+    padding: 0.5rem;
+    background: rgba(255,255,255,0.4);
+    border: 1px dashed transparent;
+    border-radius: 4px;
+    min-height: 2.5rem;
+    transition: all 0.3s ease;
+    line-height: 1.4;
+}
+
+.editable-field:focus {
+    border-color: #183B22;
+    background: white;
+}
+
+/* Custom placeholder for empty car fields */
+.editable-field:empty:before {
+    content: attr(data-placeholder);
+    color: #a0a0a0;
+    font-style: italic;
+}
+
+/* --- BACKGROUND MUSIC BUTTON --- */
+.music-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: #183B22;
+    color: #F2F3F0;
+    border: 2px solid #F2F3F0;
+    border-radius: 50px; /* Makes it a nice pill shape */
+    padding: 0.8rem 1.5rem;
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 9999; /* Keeps it above the GSAP animations */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.music-btn:hover {
+    background-color: #F2F3F0;
+    color: #183B22;
+    border-color: #183B22;
+    transform: scale(1.05); /* Slight pop-out effect */
 }
