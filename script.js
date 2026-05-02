@@ -265,23 +265,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 7. DYNAMIC COLLAGE GALLERY (MIXED MEDIA & SHUFFLE) ---
+    // --- 7. DYNAMIC COLLAGE GALLERY (MIXED MEDIA RETURNING) ---
     const container = document.getElementById('collage-container');
     
     if (container) {
-        const totalPhotos = 268; // Update this based on your photos folder
-        const totalVideos = 50;  // Update this based on your videos folder
+        // 1. Set your totals
+        const totalPhotos = 268; 
+        const totalVideos = 50;
         
         const mediaPaths = [];
         
-        // Loop through the photos folder
+        // 2. Build the Master Pool from both folders
+        // Grab all the photos (using your _X_.jpg format)
         for (let i = 1; i <= totalPhotos; i++) {
             mediaPaths.push(`imgs/photos/_${i}_.jpg`);
         }
         
-        // Loop through the videos folder
+        // Grab all the videos
         for (let i = 1; i <= totalVideos; i++) {
-            mediaPaths.push(`imgs/videos/_${i}_.mov`);
+            mediaPaths.push(`imgs/videos/${i}_.mov`);
         }
 
         const numCols = 4;
@@ -290,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cells = [];
         let displayedMedia = [];
 
-        // Shuffle Function
+        // Shuffle Function (Keeps the grid completely random on refresh)
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -308,29 +310,24 @@ document.addEventListener('DOMContentLoaded', () => {
             return available[Math.floor(Math.random() * available.length)];
         }
 
+        // 3. Smart Element Creator (Builds an <img> for photos, <video> for movies)
         function createMediaElement(src) {
             let el;
             if (src.includes('.mov') || src.includes('.mp4')) {
                 el = document.createElement('video');
                 el.src = src;
                 el.autoplay = true;
-                el.muted = true; 
+                el.muted = true; // Required for browsers to allow autoplay
                 el.loop = true;
                 el.playsInline = true;
             } else {
                 el = document.createElement('img');
                 el.src = src;
-                
-                el.onerror = function() {
-                    if (this.src.endsWith('.jpg')) {
-                        this.src = this.src.replace('.jpg', '.jpeg');
-                    }
-                };
             }
             return el;
         }
 
-        // Build Initial Grid
+        // 4. Build Initial Grid
         for (let i = 0; i < totalCells; i++) {
             const cell = document.createElement('div');
             cell.className = 'collage-cell';
@@ -345,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cells.push({ el: cell, mediaEl: mediaEl });
         }
 
-        // Double Swap Animation
+        // 5. Double Swap Animation
         let collageInterval;
         const galleryObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
