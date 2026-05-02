@@ -229,40 +229,67 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 6. BACKGROUND MUSIC & SPLASH SCREEN LOGIC ---
+    // --- 6. BACKGROUND MUSIC & SPLASH SCREEN LOGIC (JUKEBOX UPGRADE) ---
     const splashScreen = document.getElementById('splash-screen');
     const enterBtn = document.getElementById('enter-btn');
     const musicBtn = document.getElementById('music-toggle');
     const bgMusic = document.getElementById('bg-music');
+    
+    // 1. Define your playlist
+    const playlist = [
+        'imgs/cabin_mix.mp3',
+        'imgs/cabin_mix2.mp3',
+        'imgs/cabin_mix3.mp3'
+    ];
+    
+    let currentTrack = "";
     let isPlaying = false;
 
-    if (enterBtn && splashScreen && bgMusic) {
-        // 1. The Splash Screen Click (Unlocks the Audio!)
-        enterBtn.addEventListener('click', () => {
-            // Fade out the splash screen
-            splashScreen.classList.add('splash-hidden');
+    if (bgMusic) {
+        
+        // 2. The Jukebox Function: Picks a new song and plays it
+        function playRandomSong() {
+            // Filter out the currently playing song so it never repeats twice in a row
+            const availableSongs = playlist.filter(song => song !== currentTrack);
+            const nextSong = availableSongs[Math.floor(Math.random() * availableSongs.length)];
             
-            // Start the music immediately
+            bgMusic.src = nextSong;
+            currentTrack = nextSong;
             bgMusic.play();
-            isPlaying = true;
-            
-            // Update the floating toggle button text
-            if (musicBtn) musicBtn.innerHTML = "Pause";
-        });
-    }
+        }
 
-    // 2. The Floating Toggle Button (For pausing later)
-    if (musicBtn && bgMusic) {
-        musicBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                bgMusic.pause();
-                musicBtn.innerHTML = "Play";
-            } else {
-                bgMusic.play();
-                musicBtn.innerHTML = "Pause";
-            }
-            isPlaying = !isPlaying;
+        // 3. The Magic Trigger: When a song finishes, play the next one!
+        bgMusic.addEventListener('ended', () => {
+            playRandomSong();
         });
+
+        // 4. Splash Screen Click (Unlocks Audio & Starts the Jukebox)
+        if (enterBtn && splashScreen) {
+            enterBtn.addEventListener('click', () => {
+                splashScreen.classList.add('splash-hidden');
+                
+                // Kick off the first random song
+                playRandomSong();
+                isPlaying = true;
+                
+                if (musicBtn) musicBtn.innerHTML = "Pause";
+            });
+        }
+
+        // 5. The Floating Toggle Button (For manual Play/Pause)
+        if (musicBtn) {
+            musicBtn.addEventListener('click', () => {
+                if (isPlaying) {
+                    bgMusic.pause();
+                    musicBtn.innerHTML = "Play";
+                } else {
+                    // If they paused it, just resume the current track
+                    bgMusic.play();
+                    musicBtn.innerHTML = "Pause";
+                }
+                isPlaying = !isPlaying;
+            });
+        }
     }
 
     // --- 7. DYNAMIC COLLAGE GALLERY (MIXED MEDIA RETURNING) ---
