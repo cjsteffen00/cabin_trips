@@ -163,20 +163,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 6. BACKGROUND MUSIC LOGIC ---
+    // --- 6. BACKGROUND MUSIC & SPLASH SCREEN LOGIC ---
+    const splashScreen = document.getElementById('splash-screen');
+    const enterBtn = document.getElementById('enter-btn');
     const musicBtn = document.getElementById('music-toggle');
     const bgMusic = document.getElementById('bg-music');
     let isPlaying = false;
 
-    if (bgMusic && musicBtn) {
-        bgMusic.play().then(() => {
+    if (enterBtn && splashScreen && bgMusic) {
+        // 1. The Splash Screen Click (Unlocks the Audio!)
+        enterBtn.addEventListener('click', () => {
+            // Fade out the splash screen
+            splashScreen.classList.add('splash-hidden');
+            
+            // Start the music immediately
+            bgMusic.play();
             isPlaying = true;
-            musicBtn.innerHTML = "Pause";
-        }).catch((error) => {
-            isPlaying = false;
-            musicBtn.innerHTML = "Play";
+            
+            // Update the floating toggle button text
+            if (musicBtn) musicBtn.innerHTML = "Pause";
         });
+    }
 
+    // 2. The Floating Toggle Button (For pausing later)
+    if (musicBtn && bgMusic) {
         musicBtn.addEventListener('click', () => {
             if (isPlaying) {
                 bgMusic.pause();
