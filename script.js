@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. Build the Master Pool from both folders
         // Grab all the photos (using your _X_.jpg format)
         for (let i = 1; i <= totalPhotos; i++) {
-            mediaPaths.push(`imgs/photos/_${i}_.jpg`);
+            mediaPaths.push(`imgs/photos/${i}.jpg`);
         }
         
         // Grab all the videos
