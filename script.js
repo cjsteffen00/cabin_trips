@@ -203,8 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('collage-container');
     
     if (container) {
-        const totalPhotos = 291; // Update this based on your photos folder
-        const totalVideos = 80;  // Update this based on your videos folder
+        const totalPhotos = 268; // Update this based on your photos folder
+        const totalVideos = 50;  // Update this based on your videos folder
         
         const mediaPaths = [];
         
