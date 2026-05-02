@@ -103,35 +103,98 @@ document.addEventListener('DOMContentLoaded', () => {
         sheetObserver.observe(foodPanel);
     }
 
-    // --- 4. CALENDAR LOCAL STORAGE ---
+    // --- 4. FIREBASE CALENDAR SYNC ---
+    
+    // 1. PASTE YOUR CONFIG HERE (Copy this from Step 3!)
+    const firebaseConfig = {
+        apiKey: "AIzaSyCBebz5BVt667do3dnJEsqcc9a7JJeA6eI",
+        authDomain: "itinerary-a32b4.firebaseapp.com",
+        projectId: "itinerary-a32b4",
+        storageBucket: "itinerary-a32b4.firebasestorage.app",
+        messagingSenderId: "607888607739",
+        appId: "1:607888607739:web:75db61131ebd14b06f235e"
+    };
+
+    // 2. Initialize Firebase and the Database
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
     const calDays = document.querySelectorAll('.cal-content');
+
     calDays.forEach(day => {
-        const savedData = localStorage.getItem(day.id);
-        if (savedData) {
-            day.innerHTML = savedData;
-        }
-        day.addEventListener('input', function() {
-            localStorage.setItem(this.id, this.innerHTML);
+        // Create a reference to a specific document for this day (e.g., 'day-1')
+        const docRef = db.collection('cabin_calendar').doc(day.id);
+
+        // 3. LISTEN: Automatically pull data and listen for live updates from others
+        docRef.onSnapshot((doc) => {
+            if (doc.exists) {
+                // crucial check: Only update the box if YOU aren't currently typing in it!
+                // This prevents your cursor from jumping if someone else updates the database.
+                if (document.activeElement !== day) {
+                    day.innerHTML = doc.data().text;
+                }
+            }
+        });
+
+        // 4. WRITE: Save the text to the cloud when they click away from the box
+        day.addEventListener('blur', function() {
+            docRef.set({
+                text: this.innerHTML
+            }, { merge: true }); 
         });
     });
 
-    // --- 5. DYNAMIC CARPOOL LOGIC ---
+    // --- 5. FIREBASE DYNAMIC CARPOOL LOGIC ---
     const carpoolContainer = document.getElementById('carpool-container');
     const carCountSelect = document.getElementById('car-count');
 
     if (carpoolContainer && carCountSelect) {
-        const savedCarCount = localStorage.getItem('carCount') || 2;
-        carCountSelect.value = savedCarCount;
+        
+        // We use an array to track our live database listeners so we can clean them 
+        // up if someone changes the number of cars. (Prevents memory leaks!)
+        let fieldListeners = []; 
 
+        // 1. SYNC THE DROPDOWN: Listen to the database for the global car count
+        const settingsRef = db.collection('cabin_settings').doc('carpool_config');
+        
+        settingsRef.onSnapshot((doc) => {
+            let count = 2; // Default to 2 cars if the database is empty
+            if (doc.exists && doc.data().carCount) {
+                count = doc.data().carCount;
+            }
+
+            // THE FIX: Physically count how many cars are currently drawn on the screen!
+            const currentlyRenderedCars = carpoolContainer.querySelectorAll('.car-card').length;
+
+            // If the screen doesn't match the database, rebuild the grid and update the dropdown.
+            if (currentlyRenderedCars != count) {
+                carCountSelect.value = count;
+                renderCars(count);
+            }
+        });
+
+        // When YOU change the dropdown, tell the database
+        carCountSelect.addEventListener('change', (e) => {
+            settingsRef.set({ carCount: e.target.value }, { merge: true });
+        });
+
+
+        // 2. BUILD THE CARS & SYNC THE TEXT
         function renderCars(count) {
+            // Clean up old database listeners before wiping the grid
+            fieldListeners.forEach(unsubscribe => unsubscribe());
+            fieldListeners = [];
+
+            // Clear the grid
             carpoolContainer.innerHTML = '';
             
+            // Build the HTML cards
             for (let i = 1; i <= count; i++) {
                 const carCard = document.createElement('div');
                 carCard.className = 'car-card';
                 
                 carCard.innerHTML = `
-                    <div class="car-header editable-field" id="car-${i}-title" data-placeholder="Car ${i} Driver" contenteditable="true"></div>
+                    <div class="car-header editable-field" id="car-${i}-title" data-placeholder="Vehicle ${i} Driver" contenteditable="true"></div>
                     <div class="car-body">
                         <div>
                             <div class="field-label">Passengers</div>
@@ -142,25 +205,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 carpoolContainer.appendChild(carCard);
             }
 
+            // Attach Firebase to the newly created text boxes
             const editableFields = carpoolContainer.querySelectorAll('.editable-field');
             editableFields.forEach(field => {
-                const savedData = localStorage.getItem(field.id);
-                if (savedData) {
-                    field.innerHTML = savedData;
-                }
-                field.addEventListener('input', function() {
-                    localStorage.setItem(this.id, this.innerHTML);
+                const docRef = db.collection('cabin_carpool').doc(field.id);
+
+                // Listen for changes from other people
+                const unsubscribe = docRef.onSnapshot((doc) => {
+                    if (doc.exists && document.activeElement !== field) {
+                        field.innerHTML = doc.data().text || "";
+                    }
+                });
+                // Save the listener so we can turn it off later if needed
+                fieldListeners.push(unsubscribe);
+
+                // Save to Firebase when you click away from the box
+                field.addEventListener('blur', function() {
+                    docRef.set({
+                        text: this.innerHTML
+                    }, { merge: true });
                 });
             });
         }
-
-        renderCars(carCountSelect.value);
-
-        carCountSelect.addEventListener('change', (e) => {
-            const newCount = e.target.value;
-            localStorage.setItem('carCount', newCount);
-            renderCars(newCount);
-        });
     }
 
     // --- 6. BACKGROUND MUSIC & SPLASH SCREEN LOGIC ---
