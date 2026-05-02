@@ -1,0 +1,123 @@
+/* Base Resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #F5F5DC;
+    color: #241F20;
+    overflow: hidden; /* Prevents default vertical scrolling */
+}
+
+/* Horizontal Scroll Container */
+.scroll-container {
+    display: flex;
+    width: 600vw; /* 100vw for each of the 6 sections */
+    height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* Hide the visible scrollbar for a cleaner look */
+.scroll-container::-webkit-scrollbar {
+    display: none;
+}
+.scroll-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
+}
+
+/* Individual Pages */
+section {
+    width: 100vw;
+    height: 100vh;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    border-right: 2px dashed #C00031; /* Subtle divider between sections */
+}
+
+section:last-child {
+    border-right: none;
+}
+
+/* Typography */
+h1 {
+    font-size: 5rem;
+    color: #C00031;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 3rem;
+    color: #C00031;
+    margin-bottom: 2rem;
+}
+
+/* UI Elements (Cards & Forms) */
+.card {
+    background-color: rgba(36, 31, 32, 0.05);
+    padding: 2rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    padding: 0.8rem;
+    border: 1px solid #241F20;
+    border-radius: 4px;
+    background-color: #F5F5DC;
+    color: #241F20;
+    font-size: 1rem;
+}
+
+button {
+    padding: 1rem;
+    background-color: #C00031;
+    color: #F5F5DC;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #8c0024;
+}
+
+.info-box p {
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+}
+
+/* Gallery Placeholders */
+.placeholder-grid {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.photo-placeholder {
+    width: 100px;
+    height: 100px;
+    background-color: #241F20;
+    opacity: 0.1;
+    border-radius: 4px;
+}

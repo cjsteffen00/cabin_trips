@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CABIN 2K26</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="scroll-container">
+        <section id="home">
+            <h1>CABIN 2K26</h1>
+            <p>Scroll to start planning</p>
+        </section>
+
+        <section id="calendar">
+            <h2>Arrival Calendar</h2>
+            <div class="card">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Who's coming?">
+                <label for="arrival">Arrival Date & Time:</label>
+                <input type="datetime-local" id="arrival">
+                <button>Add to Calendar</button>
+            </div>
+        </section>
+
+        <section id="food">
+            <h2>Food & Meals</h2>
+            <div class="card">
+                <label for="meal">Meal/Item:</label>
+                <input type="text" id="meal" placeholder="e.g., Friday Dinner - Burgers">
+                <label for="chef">Who's bringing/cooking it?</label>
+                <input type="text" id="chef" placeholder="Name">
+                <button>Add Meal</button>
+            </div>
+        </section>
+
+        <section id="carpool">
+            <h2>Carpool Coordination</h2>
+            <div class="card">
+                <label for="driver">Driver:</label>
+                <input type="text" id="driver" placeholder="Driver's Name">
+                <label for="passengers">Passengers:</label>
+                <input type="text" id="passengers" placeholder="Who's riding along?">
+                <button>Add Carpool</button>
+            </div>
+        </section>
+
+        <section id="info">
+            <h2>Cabin Info</h2>
+            <div class="card info-box">
+                <p><strong>Dates:</strong> [Insert Dates Here]</p>
+                <p><strong>Address:</strong> [Insert Address Here]</p>
+                <p><strong>What we have:</strong> Grill, Firepit, Basic Cookware, Wi-Fi</p>
+                <p><strong>What to bring:</strong> Towels, Sleeping Bags, Drinks</p>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <h2>Photo Gallery</h2>
+            <div class="card">
+                <p><em>(Images will go here after the trip!)</em></p>
+                <div class="placeholder-grid">
+                    <div class="photo-placeholder"></div>
+                    <div class="photo-placeholder"></div>
+                    <div class="photo-placeholder"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
